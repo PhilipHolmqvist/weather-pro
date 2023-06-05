@@ -1,11 +1,12 @@
 package com.example.WeatherPro.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Weather {
     private int day;
-    private int [] temperatures;
+    private ArrayList<Integer> temperatures;
     private int wind;
     private int chanceOfRain;
     private String weatherIconUrl;
@@ -23,11 +24,11 @@ public class Weather {
         this.day = day;
     }
 
-    public int[] getTemperatures() {
+    public ArrayList<Integer> getTemperatures() {
         return temperatures;
     }
 
-    public void setTemperatures(int[] temperatures) {
+    public void setTemperatures(ArrayList<Integer> temperatures) {
         this.temperatures = temperatures;
     }
 
@@ -67,7 +68,7 @@ public class Weather {
     public String toString() {
         return "Weather{" +
                 "day=" + day +
-                ", temperatures=" + Arrays.toString(temperatures) +
+                ", temperatures=" + temperatures +
                 ", wind=" + wind +
                 ", chanceOfRain=" + chanceOfRain +
                 ", weatherIconUrl='" + weatherIconUrl + '\'' +
