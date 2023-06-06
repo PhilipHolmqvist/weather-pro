@@ -14,7 +14,8 @@ public class WeatherController {
     @GetMapping("/")
     public String test(){
         WeatherScraper scraper = new WeatherScraper();
-        scraper.getKlartData("Helsingborg");
+        String[] parts = scraper.getKlartData("skåne", "helsingborg");
+        String[] parts2 = scraper.getDmiData("helsingborg", "2706767");
         return "hello";
     }
 }
