@@ -15,6 +15,7 @@ public class WeatherController {
     public String test(){
         WeatherScraper scraper = new WeatherScraper();
         String[] parts = scraper.getKlartData("skåne", "helsingborg");
+        String[] parts1 = scraper.getSmhiData("helsingborg", "2706767");
         String[] parts2 = scraper.getDmiData("helsingborg", "2706767");
         return "hello";
     }

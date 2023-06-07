@@ -35,6 +35,13 @@
 			<version>1.15.3</version>
 		</dependency>
 
+		<!-- Json Response -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20220320</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

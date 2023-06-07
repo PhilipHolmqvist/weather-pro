@@ -5,8 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Weather {
-    private int day;
-    private ArrayList<Integer> temperatures;
+    private String day;
+    private int tempMax;
+    private int tempLow;
     private int wind;
     private int chanceOfRain;
     private String weatherIconUrl;
@@ -16,20 +17,28 @@ public class Weather {
 
     }
 
-    public int getDay() {
+    public String getDay() {
         return day;
     }
 
-    public void setDay(int day) {
+    public void setDay(String day) {
         this.day = day;
     }
 
-    public ArrayList<Integer> getTemperatures() {
-        return temperatures;
+    public int getTempMax() {
+        return tempMax;
     }
 
-    public void setTemperatures(ArrayList<Integer> temperatures) {
-        this.temperatures = temperatures;
+    public void setTempMax(int tempMax) {
+        this.tempMax = tempMax;
+    }
+
+    public int getTempLow() {
+        return tempLow;
+    }
+
+    public void setTempLow(int tempLow) {
+        this.tempLow = tempLow;
     }
 
     public int getWind() {
@@ -67,8 +76,9 @@ public class Weather {
     @Override
     public String toString() {
         return "Weather{" +
-                "day=" + day +
-                ", temperatures=" + temperatures +
+                "day='" + day + '\'' +
+                ", tempMax=" + tempMax +
+                ", tempLow=" + tempLow +
                 ", wind=" + wind +
                 ", chanceOfRain=" + chanceOfRain +
                 ", weatherIconUrl='" + weatherIconUrl + '\'' +
