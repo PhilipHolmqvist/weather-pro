@@ -7,26 +7,19 @@ import org.springframework.stereotype.Component;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpClient;
-
 import java.io.IOException;
-import java.sql.SQLOutput;
 
 @Component
 public class WeatherScraper {
 
-
+    //Använder scraping
     public String [] getKlartData(String county, String city) {
         county = county + "-län";
         city = "väder-" + city;
         String url = "https://www.klart.se/se/" + county + "/" + city +"/";
-        Document doc = connect(url);
+        Document doc = getJsoupDocument(url);
 
         Element div = doc.getElementById("day-1");
         String temperature = div.getElementsByClass("col -temp").first().text();
@@ -46,11 +39,11 @@ public class WeatherScraper {
         return parts;
     }
 
+    //Använder API.
+    public String [] getSmhiData(String city) {
+        String geoID = getGeoNamesId(city);
 
-    //Gick inte att scrapea så använder deras API.
-    public String [] getSmhiData(String city, String geoNamesId) {
-
-        JSONObject jsonResponse = callAPI("https://www.smhi.se/wpt-a/backend_startpage_nextgen/forecast/fetcher/2706767/10dFormat");
+        JSONObject jsonResponse = callAPI("https://www.smhi.se/wpt-a/backend_startpage_nextgen/forecast/fetcher/"+ geoID+ "/10dFormat");
 
         JSONArray daySerie = jsonResponse.getJSONArray("daySerie"); //Från js array måste vi hämta data.
         JSONObject today = daySerie.getJSONObject(0); //Från array väljer vi första dagen i listan.
@@ -76,9 +69,11 @@ public class WeatherScraper {
         return null;
     }
 
+    //Använder API.
+    public String[] getDmiData(String city){
+        String geoID = getGeoNamesId(city);
 
-    public String[] getDmiData(String city, String geoNamesId){
-        JSONObject jsonResponse = callAPI("https://www.dmi.dk/NinJo2DmiDk/ninjo2dmidk?cmd=llj&ids=2706767");
+        JSONObject jsonResponse = callAPI("https://www.dmi.dk/NinJo2DmiDk/ninjo2dmidk?cmd=llj&ids="+geoID);
         JSONArray aggData = jsonResponse.getJSONArray("aggData");
 
         //Temperaturer för hela dagen.
@@ -108,13 +103,15 @@ public class WeatherScraper {
 
     }
 
+    //Anropa ett API och få json objekt i retur.
     public JSONObject callAPI(String uri){
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(uri, String.class);
         return new JSONObject(result);
     }
 
-    public Document connect(String url){
+    //Anropa en hemsida och få jsoup document i retur.
+    public Document getJsoupDocument(String url){
 
         Document doc;
 
@@ -127,5 +124,24 @@ public class WeatherScraper {
             throw new RuntimeException(e);
         }
         return doc;
+    }
+
+    //Returnerar geoNamesID för en stad. Vissa väderappar använder ID:t som en unik identiferare för en stad.
+    public String getGeoNamesId(String cityName){
+        String url = "https://public.opendatasoft.com/api/records/1.0/search/?dataset=geonames-all-cities-with-a-population-1000&q=" + cityName + "&sort=name&facet=feature_code&facet=cou_name_en&facet=timezone";
+        JSONObject jsonResponse = callAPI(url);
+        JSONArray records = jsonResponse.getJSONArray("records");
+        JSONObject obj = records.getJSONObject(0);
+        JSONObject fields = obj.getJSONObject("fields");
+        String geonameID = fields.getString("geoname_id");
+        String name = fields.getString("name");
+        System.out.println("Geo id: " + geonameID + " name: " + name);
+        return geonameID;
+    }
+
+    //Hämta vilket län en viss stad ligger i.
+    //ToDo: Implement
+    public String getCountyForCity(String cityName){
+        return null;
     }
 }
