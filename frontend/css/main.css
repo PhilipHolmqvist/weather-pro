@@ -31,6 +31,7 @@ body {
   text-align: center;
   color: white;
   padding-top: 100px;
+  
 }
 
 
@@ -74,12 +75,14 @@ button:hover {
   margin: 0 auto;
   margin-top: 5%;
   padding: 5px 30px;
+  margin: 10px 50px ;
   width: 290px;
   height: 430px;
   border-radius: 3px;
   background-color: #fff;
   box-shadow: 1px 2px 10px rgba(0, 0, 0, .2);
   -webkit-animation: open 2s cubic-bezier(.39, 0, .38, 1);
+  display: inline-block;
 }
 
 .card h1, h2, h3, h4 {
